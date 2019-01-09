@@ -4,7 +4,7 @@ A refreshing way to DOM templating.
 
 Write this...
 
-```javascript
+```html
 <script src="https://gitcdn.xyz/repo/audinue/refresh/v1.0.0/refresh.min.js"></script>
 <script>
     var name = 'John'
