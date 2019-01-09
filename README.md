@@ -1,7 +1,5 @@
 # Refresh
 
-A refreshing way to DOM templating.
-
 Write this...
 
 ```html
