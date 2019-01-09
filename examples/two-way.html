@@ -1,0 +1,22 @@
+<script src="https://gitcdn.xyz/repo/audinue/refresh/v1.0.0/refresh.min.js"></script>
+<script>
+    var name = 'John'
+</script>
+
+<p>Name: <input value-source="name"></p>
+<p>Hello {name}!</p>
+
+<script>
+    var tags = ['Action', 'Comedy', 'Drama']
+    var selectedTags = []
+</script>
+
+<p for="tag in tags">
+    <input type="checkbox" value="{tag}" checked-source="selectedTags">
+</p>
+
+Selected tags:
+<ul for="tag in selectedTags">
+    <li>{tag}</li>
+</ul>
+

@@ -1,0 +1,16 @@
+<script src="https://gitcdn.xyz/repo/audinue/refresh/v1.0.0/refresh.min.js"></script>
+<script>
+    var fruits = ['Apple', 'Banana', 'Cherry']
+    var name = ''
+</script>
+
+<form onsubmit="event.preventDefault();fruits.push(name)">
+    <input value="{name}" oninput="name=this.value">
+    <button>Add</button>
+</form>
+
+<ul for="fruit, i in fruits">
+    <li>
+        {fruit}
+    </li>
+</ul>

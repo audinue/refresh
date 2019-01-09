@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<style>
+    html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        display: flex;
+    }
+    .editor-pane, .preview-pane {
+        position: relative;
+        flex-grow: 1;
+        margin: 1em;
+    }
+    .editor-pane {
+        display: flex;
+        flex-direction: column;
+    }
+    .editor-pane textarea {
+        flex-grow: 1;
+        resize: none;
+    }
+    .example-pane {
+        display: flex;
+        margin: 1em 0;
+        margin-top: 0;
+    }
+    .example-pane select {
+        flex-grow: 1;
+        margin-left: 1em;
+    }
+    .preview-pane {
+        display: flex;
+    }
+    .preview-pane iframe {
+        flex-grow: 1;
+    }
+</style>
+
+<script src="refresh.min.js"></script>
+<script>
+    var examples = [
+        'hello',
+        'list',
+        'if',
+        'two-way'
+    ]
+    var code = ''
+    function load (name) {
+        var xhr = new XMLHttpRequest()
+        xhr.onload = function () {
+            code = xhr.responseText
+            show()
+            refresh()
+        }
+        xhr.open('GET', 'examples/' + name + '.html')
+        xhr.send()
+    }
+    var timeout
+    function show () {
+        if (timeout === undefined) {
+            timeout = setTimeout(function () {
+                timeout = undefined
+                preview.src = 'data:text/html;charset=utf-8,' + escape(code)
+            }, 500)
+        }
+    }
+    load(examples[0])
+</script>
+
+<div class="editor-pane">
+    <div class="example-pane">
+        Example:
+        <select for="name in examples" oninput="load(this.value)">
+            <option>{name}</option>
+        </select>
+    </div>
+    <textarea value-source="code" oninput="show()"></textarea>
+</div>
+<div class="preview-pane">
+    <iframe id="preview"></iframe>
+</div>

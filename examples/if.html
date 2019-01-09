@@ -1,0 +1,11 @@
+<script src="https://gitcdn.xyz/repo/audinue/refresh/v1.0.0/refresh.min.js"></script>
+<script>
+    var name = ''
+</script>
+
+<p>
+    Name:
+    <input value="{name}" oninput="name=this.value">
+    <span if="!name" style="color: red">Please enter your name!</span>
+</p>
+<p if="name">Hello {name}!</p>
