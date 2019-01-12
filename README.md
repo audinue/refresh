@@ -17,6 +17,13 @@ And you get this...
 ![Demo](demo.gif)
 
 Visit the [playground](https://audinue.github.io/refresh/playground.html) to learn more.
+## Usage
+
+Copy and paste the following code to your HTML page:
+
+```html
+<script src="https://audinue.github.io/refresh/refresh.min.js"></script>
+```
 
 ## Notes
 
