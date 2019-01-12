@@ -226,7 +226,7 @@ function compileFor (node, templates) {
   var info = parseFor(node.getAttribute('for'))
   var bindExpression = compileExpression(info.expression)
   var bindCreateEntryScope = compileCreateEntryScope(info)
-  var updateEntryScope = compileUpdateEntryScope(info)
+  var bindUpdateEntryScope = compileUpdateEntryScope(info)
   var bindAttributes = compileAttributes(node)
   var childNodes = []
   while (node.firstChild) {
@@ -239,6 +239,7 @@ function compileFor (node, templates) {
     var updateAttributes = bindAttributes(node, scope)
     var updateExpression = bindExpression(node, scope)
     var createEntryScope = bindCreateEntryScope(scope)
+    var updateEntryScope = bindUpdateEntryScope(scope)
     var previous = []
     return function update () {
       updateAttributes()
@@ -277,7 +278,7 @@ function compileFor (node, templates) {
           })
       }
       previous.forEach(function (entry, i) {
-        updateEntryScope(entry.scope, next[i])
+        updateEntryScope(entry.scope, next[i], i)
         entry.updates.forEach(execute)
       })
     }
@@ -296,7 +297,14 @@ function compileCreateEntryScope (info) {
 }
 
 function compileUpdateEntryScope (info) {
-  return new Function('s', 'v', 's.' + info.value + '=v')
+  return new Function('s',
+    'return function(e,v,i){' +
+      'Object.assign(e,s,{' +
+        info.value + ':v' +
+        (info.index !== undefined ? ',' + info.index + ':i' : '') +
+      '})' +
+    '}'
+  )
 }
 
 function parseFor (string) {
