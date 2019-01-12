@@ -3,7 +3,7 @@
 Write this...
 
 ```html
-<script src="https://gitcdn.xyz/repo/audinue/refresh/master/refresh.min.js"></script>
+<script src="https://audinue.github.io/refresh/refresh.min.js"></script>
 <script>
     var name = 'John'
 </script>
@@ -16,7 +16,7 @@ And you get this...
 
 ![Demo](demo.gif)
 
-Visit the [playground](https://gitcdn.xyz/repo/audinue/refresh/master/playground.html) to learn more.
+Visit the [playground](https://audinue.github.io/refresh/playground.html) to learn more.
 
 ## Notes
 
