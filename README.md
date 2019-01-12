@@ -3,7 +3,7 @@
 Write this...
 
 ```html
-<script src="https://gitcdn.xyz/repo/audinue/refresh/v1.0.0/refresh.min.js"></script>
+<script src="https://gitcdn.xyz/repo/audinue/refresh/master/refresh.min.js"></script>
 <script>
     var name = 'John'
 </script>
@@ -28,5 +28,6 @@ Visit the [playground](https://gitcdn.xyz/repo/audinue/refresh/master/playground
 - `safe-*` for edge-cases like `<input type="number" safe-value="{foo}">`
 - Two way data binding:
     - `value-source="expression"` also works for `<select>` for WebKit only.
-    - `checked-source="expression"` accepts boolean and array.
+    - `checked-source="expression"` accepts boolean, array and other.
+- `template="name(parameters)"` and `apply="name(arguments)"`
 - Handle `autofocus` well.

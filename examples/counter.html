@@ -1,9 +1,11 @@
-<script src="https://gitcdn.xyz/repo/audinue/refresh/v1.0.0/refresh.min.js"></script>
+<script src="@refresh"></script>
 <script>
     var count = 0
 </script>
 
 Count: {count}
+<br>
+<input safe-value="{count}" oninput="count=this.value" type="number">
 <br>
 <button onclick="count++">+</button>
 <button onclick="count--">-</button>

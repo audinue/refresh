@@ -1,0 +1,40 @@
+<script src="@refresh"></script>
+<script>
+  var categories = [
+    {
+      name: 'Category A',
+      children: [
+        { name: 'Category A-1', children: [] },
+        {
+          name: 'Category A-2',
+          children: [
+            { name: 'Category A-2-1', children: [] },
+            { name: 'Category A-2-2', children: [] },
+            { name: 'Category A-2-3', children: [] }
+          ]
+        },
+        { name: 'Category A-3', children: [] }
+      ]
+    },
+    {
+      name: 'Category B',
+      children: [
+        { name: 'Category B-1', children: [] },
+        { name: 'Category B-2', children: [] },
+        { name: 'Category B-3', children: [] }
+      ]
+    },
+    { name: 'Category C', children: [] }
+  ]
+</script>
+
+<pre>{JSON.stringify(categories, null, 2)}</pre>
+
+<ul template="renderCategories(categories)" for="category, i in categories">
+  <li>
+    <p><input value-source="category.name"> <button onclick="categories.splice(i, 1)">Remove</button></p>
+    <ul apply="renderCategories(category.children)"></ul>
+  </li>
+</ul>
+
+<ul apply="renderCategories(categories)"></ul>
