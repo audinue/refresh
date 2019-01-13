@@ -4,10 +4,11 @@ var properties = toMap(['async', 'autofocus', 'autoplay', 'checked', 'compact', 
 ;(document.readyState !== 'loading' ? initialize : addEventListener)()
 
 function toMap (array) {
-  var map = {}
-  array.forEach(function (value) {
-    map[value.toLowerCase()] = value
-  })
+  return array.reduce(toMapEntry, {})
+}
+
+function toMapEntry (map, value, i) {
+  map[value.toLowerCase()] = value
   return map
 }
 
@@ -21,6 +22,9 @@ function domContentLoaded () {
 }
 
 function initialize () {
+  window.addEventListener('hashchange', function () {
+    refresh()
+  })
   document.body.addEventListener('input', function (e) {
     var target = e.target
     if (target.u_) {
