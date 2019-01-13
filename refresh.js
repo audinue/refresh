@@ -94,7 +94,11 @@ function compileElement (node, templates) {
         ? compileTemplate
         : node.hasAttribute('if')
           ? compileIf
-          : compileContent
+          : node.hasAttribute('else-if')
+            ? compileElseIf
+            : node.hasAttribute('else')
+              ? compileElse
+              : compileContent
   )(node, templates)
 }
 
@@ -130,6 +134,73 @@ function compileIf (node, templates) {
       }
     }
   }
+}
+
+function compileElseIf (node, templates) {
+  var bindExpression = compileExpression(node.getAttribute('else-if'))
+  var bindContent = compileContent(node, templates)
+  return function bind (node, scope) {
+    var previousIfs = findPreviousIfs(node)
+    var updateExpression = bindExpression(node, scope)
+    var updateContent = bindContent(node, scope)
+    var placeholder = document.createTextNode('')
+    node.p_ = placeholder
+    return function update () {
+      var content = node.i_ || node
+      if (previousIfs.every(isFalse) && updateExpression()) {
+        if (content.parentNode === null) {
+          placeholder.parentNode.replaceChild(content, placeholder)
+        }
+        updateContent()
+      } else {
+        if (placeholder.parentNode === null) {
+          content.parentNode.replaceChild(placeholder, content)
+        }
+      }
+    }
+  }
+}
+
+function compileElse (node, templates) {
+  var bindContent = compileContent(node, templates)
+  return function bind (node, scope) {
+    var previousIfs = findPreviousIfs(node)
+    var updateContent = bindContent(node, scope)
+    var placeholder = document.createTextNode('')
+    node.p_ = placeholder
+    return function update () {
+      var content = node.i_ || node
+      if (previousIfs.every(isFalse)) {
+        if (content.parentNode === null) {
+          placeholder.parentNode.replaceChild(content, placeholder)
+        }
+        updateContent()
+      } else {
+        if (placeholder.parentNode === null) {
+          content.parentNode.replaceChild(placeholder, content)
+        }
+      }
+    }
+  }
+}
+
+function findPreviousIfs (node) {
+  var nodes = []
+  while (true) {
+    node = node.previousSibling
+    if (node === null) {
+      break
+    }
+    if (node.nodeType === Node.ELEMENT_NODE
+        && (node.hasAttribute('if') || node.hasAttribute('else-if'))) {
+      nodes.push(node)
+    }
+  }
+  return nodes
+}
+
+function isFalse (node) {
+  return node.p_.parentNode !== null
 }
 
 function compileApply (node, templates) {
@@ -203,7 +274,7 @@ function compileContent (node, templates) {
       ? compileApply
       : node.hasAttribute('html')
         ? compileHtml
-        : node.hasAttribute('for')
+        : node.hasAttribute('for') && node.localName !== 'label'
           ? compileFor
           : compileRegular
   )(node, templates)
@@ -351,11 +422,13 @@ function compileAttribute (attribute) {
       ? compileValueSource
       : name === 'checked-source'
         ? compileCheckedSource
-        : /^on/.test(name)
-          ? compileEvent
-          : isInterpolated(attribute.value)
-            ? compileMaybeAttribute
-            : compileNothing
+        : name === 'class-map'
+          ? compileClassMap
+          : /^on/.test(name)
+            ? compileEvent
+            : isInterpolated(attribute.value)
+              ? compileMaybeAttribute
+              : compileNothing
   )(attribute)
 }
 
@@ -424,6 +497,46 @@ function compileUpdateCheckedSource (expression) {
       '}' +
     '}'
   )
+}
+
+function compileClassMap (attribute) {
+  var bindClassList = compileClassList(attribute.value)
+  return function bind (node, scope) {
+    return bindClassList(node.ownerElement, scope)
+  }
+}
+
+function compileClassList (string) {
+  return new Function('n_', 's_',
+    'var u_=function(){' +
+      'with(s_){' +
+      parseMap(string)
+        .map(compileClassListEntry)
+        .join(';') +
+      '}' +
+    '};' +
+    'return function(){' +
+      'u_.call(n_)' +
+    '}'
+  )
+}
+
+function compileClassListEntry (entry) {
+  return 'n_.classList.toggle("' + entry.class + '",' + entry.expression + ')'
+}
+
+function parseMap (string) {
+  return string === ''
+    ? []
+    : string.split(';').map(parseEntry)
+}
+
+function parseEntry (string) {
+  var tokens = string.split(':')
+  return {
+    class: tokens[0].trim(),
+    expression: tokens[1].trim()
+  }
 }
 
 function normalize (name) {

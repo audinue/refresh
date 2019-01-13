@@ -31,10 +31,11 @@ Copy and paste the following code to your HTML page:
 - `<p align="{align}">Hello {name}!</p>`
 - `this` refers to the owning element.
 - `<tag for="value[, key] in expression"></tag>` creates new scope.
-- `<tag if="expression"></tag>`
+- `<tag if="expression"></tag>`, `<tag else-if="expression"></tag>` and `<tag else></tag>`
+- `<tag class-map="class: expression[; class: expression]*"></tag>`
 - `safe-*` for edge-cases like `<input type="number" safe-value="{foo}">`
 - Two way data binding:
     - `value-source="expression"` also works for `<select>` for WebKit only.
     - `checked-source="expression"` accepts boolean, array and other.
 - `template="name(parameters)"` and `apply="name(arguments)"`
-- Handle `autofocus` well.
+- `autofocus` works well with `if`.
