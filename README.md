@@ -25,6 +25,12 @@ Copy and paste the following code to your HTML page:
 <script src="https://audinue.github.io/refresh/refresh.min.js"></script>
 ```
 
+Or through [GitCDN](https://github.com/schme16/gitcdn.xyz)
+
+```html
+<script src="https://gitcdn.link/repo/audinue/refresh/master/refresh.min.js"></script>
+```
+
 ## Notes
 
 - Call `refresh()` to update the DOM outside of HTML.
