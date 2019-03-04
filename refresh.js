@@ -424,16 +424,42 @@ function compileAttribute (attribute) {
   return (
     name === 'value-source'
       ? compileValueSource
-      : name === 'checked-source'
-        ? compileCheckedSource
-        : name === 'class-map'
-          ? compileClassMap
-          : /^on/.test(name)
-            ? compileEvent
-            : isInterpolated(attribute.value)
-              ? compileMaybeAttribute
-              : compileNothing
+      : name === 'text-source'
+        ? compileTextSource
+        : name === 'checked-source'
+          ? compileCheckedSource
+          : name === 'class-map'
+            ? compileClassMap
+            : /^on/.test(name)
+              ? compileEvent
+              : isInterpolated(attribute.value)
+                ? compileMaybeAttribute
+                : compileNothing
   )(attribute)
+}
+
+function compileTextSource (attribute) {
+  var bindExpression = compileExpression(attribute.value)
+  var bindUpdateTextSource = compileUpdateTextSource(attribute.value)
+  return function bind (node, scope) {
+    var element = node.ownerElement
+    element.u_ = bindUpdateTextSource(scope)
+    var updateExpression = bindExpression(element, scope)
+    return function () {
+      element.textContent = updateExpression()
+    }
+  }
+}
+
+function compileUpdateTextSource (expression) {
+  return new Function('s_',
+    'return function(){' +
+      'with(s_){' +
+        expression + '=this.textContent;' +
+        'refresh()' +
+      '}' +
+    '}'
+  )
 }
 
 function compileValueSource (attribute) {

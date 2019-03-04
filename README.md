@@ -43,5 +43,6 @@ Or through [GitCDN](https://github.com/schme16/gitcdn.xyz)
 - Two way data binding:
     - `value-source="expression"` also works for `<select>` for WebKit only.
     - `checked-source="expression"` accepts boolean, array and other.
+    - `text-source="expression"` for content-editable elements.
 - `template="name(parameters)"` and `apply="name(arguments)"`
 - `autofocus` works well with `if`.
