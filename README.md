@@ -46,3 +46,13 @@ Or through [GitCDN](https://github.com/schme16/gitcdn.xyz)
     - `text-source="expression"` for content-editable elements.
 - `template="name(parameters)"` and `apply="name(arguments)"`
 - `autofocus` works well with `if`.
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-138735077-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-138735077-1');
+</script>
